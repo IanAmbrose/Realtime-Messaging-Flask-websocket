@@ -1,0 +1,38 @@
+<html>
+  <head>
+    <title>Realtime Messaging with Flask and Websockets</title>
+  </head>
+  <body>
+    <h1>Realtime Messaging with Flask and Websockets</h1>
+    <form id="message-form">
+      <input
+        type="text"
+        id="message-input"
+        placeholder="Enter your message here"
+      />
+      <button type="submit">Send</button>
+    </form>
+    <ul id="messages">
+    </ul>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js "></script>
+    <script>
+      var socket = io();
+      var messageInput = document.getElementById("message-input");
+      var messageForm = document.getElementById("message-form");
+      var messagesList = document.getElementById("messages");
+
+      messageForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var message = messageInput.value;
+        socket.emit("message", message);
+        messageInput.value = "";
+      });
+
+      socket.on("message", function (message) {
+        var li = document.createElement("li");
+        li.innerHTML = message;
+        messagesList.appendChild(li);
+      });
+    </script>
+  </body>
+</html>
